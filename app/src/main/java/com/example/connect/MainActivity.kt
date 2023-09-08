@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, marsViewModel: MarsViewModel= viewModel(), modifier: Modifier = Modifier) {
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    val marsViewModel = viewModel(modelClass = MarsViewModel::class.java)
   val lands by marsViewModel.lands.collectAsState()
 
 Column {
@@ -50,14 +51,14 @@ LazyColumn{
     items(lands){item ->
 
         Text(
-            text = "--------The Lands: ${item.id}!",
+            text = "--------The Lands: ${item.type}!",
             modifier = modifier
         )
     }
 }
 
     Text(
-        text = "--------The Lands::::: ${lands.size}!",
+        text = "--------The Lands::::: ${lands}!",
         modifier = modifier
     )
     Button(onClick = {marsViewModel.getlands()}) {

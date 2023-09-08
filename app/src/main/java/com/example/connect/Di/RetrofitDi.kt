@@ -10,12 +10,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitDi {
+
 
 
 
@@ -33,10 +35,10 @@ object RetrofitDi {
 
     @Singleton
     @Provides
-    fun provideRetrofitObject(): Retrofit{
+    fun provideRetrofitObject(moshi: Moshi): Retrofit{
        return Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl("https://mars.udacity.com/")
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     }
@@ -46,8 +48,12 @@ object RetrofitDi {
 
     @Provides
     @Singleton
-    fun providesApi(retrofit: Retrofit) : MarsApi =
-        retrofit.create(MarsApi::class.java)
+    fun providesApi(retrofit: Retrofit) : MarsApi {
+
+     return   retrofit.create(MarsApi::class.java)
+
+    }
+
 
 
 
